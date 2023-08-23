@@ -42,11 +42,18 @@ while cont=='y':
         for i in range(len(list_res)): #читаем из списка в итоговую подстроку
             str_res+=list_res[i]
 
-        #говорят, eval() опасная штука, но тут ничего сломаться не должно
-        if (p_menu=='4' or p_menu=='5') and int(b)==0:
-            print("Вы пытались поделить на 0")
+        try:
+            a=int(a)
+            b=int(b)
+        except ValueError:
+            print("Введите числа a и b")
         else:
-            print("Результат = ", eval(str_res))
+            #говорят, eval() опасная штука, но тут ничего сломаться не должно
+            if (p_menu=='4' or p_menu=='5') and int(b)==0:
+                print("Вы пытались поделить на 0")
+            else:
+                print("Результат = ", eval(str_res))
+
 
     elif int(task_number)==2:
         print("Задача 2: Ввести с клавиатуры символ. Определить, чем он является: цифрой, буквой или знаком пунктуации")
