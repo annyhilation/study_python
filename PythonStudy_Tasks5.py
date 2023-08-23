@@ -1,14 +1,15 @@
 
 from math import *
 from statistics import *
-
+from functions import Upyachka as U
+from functions import KorolIShut as K
 
 
     
 
 cont = 'y'
 while cont=='y':
-    task_number = input("Введите номер задачи 1-4: ")
+    task_number = input("Введите номер задачи 1-5: ")
 
     if int(task_number)==1:
         print("Задача 1: Определить, параллельна ли определенная прямая линия оси ординат, либо оси абсцисс. Прямая задается двумя точками")
@@ -79,7 +80,7 @@ while cont=='y':
             if s_list[i]==sex:
                 s_ok+=1
         if s_ok == 0:
-            print("У нас тут так не принято")
+            print("У нас так не принято")
         else:
             i==0
             for i in range(len(s_list)):
@@ -120,19 +121,19 @@ while cont=='y':
                 tmp_animals = l_animals[i]
                 if i<9:
                     tmp_animals = tmp_animals[:3]
-                    print("tmp_animals: ", tmp_animals, "length: ", len(tmp_animals), " ", i, " ", n_animal)
+   #                 print("tmp_animals: ", tmp_animals, "length: ", len(tmp_animals), " ", i, " ", n_animal)
                 else:
                     tmp_animals = tmp_animals[:4]
-                    print("tmp_animals: ", tmp_animals, "length: ", len(tmp_animals), " ", i, " ", n_animal)
+   #                 print("tmp_animals: ", tmp_animals, "length: ", len(tmp_animals), " ", i, " ", n_animal)
 
                 for j in range(len(l_voices)):
                     tmp_voices = l_voices[j]
                     if i<9:
                         tmp_voices = tmp_voices[:3]
-                        print("tmp_voices: ", tmp_voices, "length: ", len(tmp_voices)," ", j, " ", n_animal)
+   #                     print("tmp_voices: ", tmp_voices, "length: ", len(tmp_voices)," ", j, " ", n_animal)
                     else:
                         tmp_voices = tmp_voices[:4]
-                        print("tmp_voices: ", tmp_voices, "length: ", len(tmp_voices), " ", j, " ", n_animal)
+   #                     print("tmp_voices: ", tmp_voices, "length: ", len(tmp_voices), " ", j, " ", n_animal)
    #                 if (l_animals[i]==l_voices[j] or l_animals[i]==l_voices[j-1]) and n_animal==i:
                     if tmp_animals==tmp_voices and n_animal==i:
                         l_res+=l_voices[j].replace(tmp_voices,'')
@@ -144,6 +145,83 @@ while cont=='y':
         print('Задача 5: Написать игру "О, счастливчик!". На экране по очереди появляются вопросы и варианты ответов. Неправильный выбор - игра окончена. Правильный ответ - переходим к следующему вопросу. Если все ответы правильные - в конце выводится сообщение о победе. По желанию можно реализовать несгораемые суммы, подсказки, работу с файлами, звуковые эффекты и тд')
         print("")
         print("Начинаем!")
+
+        file = open('quiz.txt',mode='r',encoding='utf-8')
+        content_quiz = file.read()
+        file.close()
+
+        answer=''#ответ
+        record=0#баллы
+        l_quiz1 = ''#первая строка: подводка к вопросу
+        l_quiz2 = ''#вторая строка: вопрос
+        l_quiz3 = ''#третья строка: подсказка
+        l_quiz4 = ''#четвертая строка: ответ
+        l_quiz5 = ''#пятая строка: баллы
+
+        l_quiz_all = list()
+        l_quiz_all = content_quiz.split('\n')
+#        print("l_quiz_all: ", l_quiz_all)
+        q_num_all = len(l_quiz_all)
+#        print("q_num_all = ", q_num_all)
+        for i in range(0, q_num_all, 5):
+            l_quiz1+=l_quiz_all[i]+'\n'
+#            print("l_quiz1:\n", l_quiz, ", i: ", i)
+
+        l_quiz1=l_quiz1.split('\n')
+        l_quiz1.remove('')
+
+        for i in range(1, q_num_all, 5):
+            l_quiz2+=l_quiz_all[i]+'\n'
+            i+=5
+        l_quiz2=l_quiz2.split('\n')
+        l_quiz2.remove('')
+
+        for i in range(2, q_num_all, 5):
+            l_quiz3+=l_quiz_all[i]+'\n'
+            i+=5
+        l_quiz3=l_quiz3.split('\n')
+        l_quiz3.remove('')
+
+        for i in range(3, q_num_all, 5):
+            l_quiz4+=l_quiz_all[i]+'\n'
+            i+=5
+        l_quiz4=l_quiz4.split('\n')
+        l_quiz4.remove('')
+
+        for i in range(4, q_num_all, 5):
+            l_quiz5+=l_quiz_all[i]+'\n'
+            i+=5
+        l_quiz5=l_quiz5.split('\n')
+        l_quiz5.remove('')
+
+        for i in range(len(l_quiz1)):
+            print(l_quiz1[i], l_quiz2[i], sep='\n')
+            answer = input("Ваш ответ: ")
+            if answer=='подсказка':
+                print(l_quiz3[i])
+                if l_quiz3[i]=='сейчас откроется ссылка':
+                    print("Чтобы продолжить, закройте браузер")
+                    K()
+                elif l_quiz3[i]=='ВЗДРЫЖЪНИ ЭФФЕКТ':
+                    U()
+                answer = input("Ваш ответ: ")
+                if answer == l_quiz4[i]:
+                    print("Вы правы!")
+                    record+=int(l_quiz5[i])/2
+                else:
+                    print("Вы ошиблись")
+                    break
+            elif answer == l_quiz4[i]:
+                print("Вы правы!")
+                record+=int(l_quiz5[i])
+            else:
+                print("Вы ошиблись")
+                break
+        if record==50*len(l_quiz1):
+            print("Поздравляю! Вы победили!")
+            print("Вы набрали ", record, "баллов")
+        else:
+            print("Вы набрали ", record, "баллов")
 
 
     cont=input("Повторить выбор задачи? y\n")
